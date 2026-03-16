@@ -232,7 +232,7 @@ export default function ChatWindow({ isMobile }) {
       {/* Messages Area */}
       <div className="flex-1 overflow-hidden relative">
         <ScrollArea className="h-full" ref={scrollRef}>
-          <div className="p-4 flex flex-col gap-2 min-h-full">
+          <div className="p-4 pb-8 flex flex-col gap-2 min-h-full">
             <div className="grow" /> {/* Push messages to bottom if few */}
             {filterMessage.map((message, i) => (
               <MessageBubble

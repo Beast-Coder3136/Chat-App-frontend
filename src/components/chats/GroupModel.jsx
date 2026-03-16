@@ -165,7 +165,6 @@ export default function GroupModel({ groupMembers }) {
             >
               Create Group
             </Button>
-
           </div>
         </ScrollArea>
       </DropdownMenuContent>

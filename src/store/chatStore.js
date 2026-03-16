@@ -3,7 +3,8 @@ import { create } from "zustand";
 import { useAuthStore } from "./autStore";
 import { toast } from "react-toastify";
 
-const ENDPOINT = "https://chat-app-backend-4hs0.onrender.com"
+// const ENDPOINT = "https://chat-app-backend-4hs0.onrender.com"
+const ENDPOINT = "http://localhost:5001"
 
 export const useChatStore = create((set, get) => ({
   Chats: [],
@@ -12,7 +13,7 @@ export const useChatStore = create((set, get) => ({
 
   getUserChats: async () => {
     try {
-      const res = await axios.get(`https://chat-app-backend-4hs0.onrender.com/api/chat`, { withCredentials: true });
+      const res = await axios.get(`${ENDPOINT}/api/chat`, { withCredentials: true });
 
       set({ Chats: res.data.chats });
     } catch (error) {
