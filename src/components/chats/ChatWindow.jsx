@@ -1,7 +1,7 @@
 import MessageBubble from "./MessageBubble"
 import TypingIndicator from "./TypingIndicator"
 import { Button } from "@/components/ui/button"
-import { UserPen, SendHorizontal, ChevronLeft, MoreVertical, Paperclip, Smile, UserPlus, EllipsisVertical, Pencil, ChevronUp } from 'lucide-react';
+import { UserPen, SendHorizontal, ChevronLeft, MoreVertical, Paperclip, Smile, UserPlus, EllipsisVertical, Pencil, ChevronUp, Loader } from 'lucide-react';
 import { useChatStore } from "@/store/chatStore"
 import {
   DropdownMenu,
@@ -36,12 +36,13 @@ export default function ChatWindow({ isMobile }) {
   const [filterMessage, setFilterMessage] = useState([]);
   const [isUserTyping, setIsUserTyping] = useState(false);
   const scrollRef = useRef(null);
-  const [typing ,setTyping ] = useState(false) ;
+  const [typing ,setTyping ] = useState(false) 
+  const [sending , setSending] = useState(false) 
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!content.trim()) return;
-
+    setSending(true) ;
     const message = await sendMessage({
       content,
       chatId: selectedChat._id
@@ -49,6 +50,7 @@ export default function ChatWindow({ isMobile }) {
     socket.emit("new-message", message)
     setFilterMessage(prev => [...prev, message]);
     setContent("");
+    setSending(false)
     socket.emit("stop-typing", selectedChat._id);
     setIsUserTyping(false);
   }
@@ -79,18 +81,14 @@ export default function ChatWindow({ isMobile }) {
         setFilterMessage(prev => [...prev, newMessageRecieved]);
       }
     };
-
     socket.on("message-recieved", handleMessageReceived);
-
     return () => {
       socket.off("message-recieved", handleMessageReceived);
     };
   }, [selectedChat, notification, socket, setNotification]);
-
   // useEffect(() => {
   //   if (!socket) return;
   // })
-
   // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
@@ -282,9 +280,11 @@ export default function ChatWindow({ isMobile }) {
             type="submit"
             size="icon"
             className="rounded-full h-11 w-11 shrink-0 shadow-lg"
-            disabled={!content.trim()}
+            disabled={!content.trim() || sending}
           >
-            <SendHorizontal className="h-5 w-5" />
+            {
+              sending ? <Loader className="h-5 w-5 animate-spin"></Loader> : <SendHorizontal className="h-5 w-5" />
+            } 
           </Button>
         </form>
       </div>

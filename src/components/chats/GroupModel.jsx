@@ -26,6 +26,7 @@ export default function GroupModel({ groupMembers }) {
   const { createGroup } = useChatStore();
   const [chatName, setChatName] = useState("");
 
+
   useEffect(() => {
     if (searchMember.trim().length > 0) {
       const filtered = initialMembers.filter((member) => {

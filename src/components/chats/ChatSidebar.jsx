@@ -19,10 +19,12 @@ import { useEffect, useState } from "react"
 import SearchDrawer from "./SearchDrawer"
 import GroupModel from "./GroupModel";
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 export default function ChatSidebar() {
   const { authUser, notification, setNotification, socket, onlineUser } = useAuthStore();
-  const { Chats, getUserChats, setSelectedChat, selectedChat } = useChatStore();
+  const { Chats, getUserChats, setSelectedChat, selectedChat , loadingChats } = useChatStore();
+  const [loadChat , setLoadChat] = useState(false) 
 
   const chats = Chats.map((chat) => {
     const users = chat?.users.filter((user) => user?._id !== authUser?._id);
@@ -42,6 +44,10 @@ export default function ChatSidebar() {
       </div>
 
       {/* Show list of chats */}
+
+      { loadingChats? <div className="flex justify-center">
+        <Loader2 className="h-10 w-10 animate-spin"></Loader2>
+      </div> :
       <ScrollArea className="h-130">
         <div className="px-3 pb-10">
           {chats.length > 0 ? (
@@ -128,6 +134,7 @@ export default function ChatSidebar() {
           )}
         </div>
       </ScrollArea>
+      }
     </div>
   );
 }

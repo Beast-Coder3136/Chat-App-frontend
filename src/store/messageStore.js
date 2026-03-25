@@ -3,8 +3,8 @@ import { create } from "zustand";
 import { useAuthStore } from "./autStore";
 import { useChatStore } from "./chatStore";
 
-const ENDPOINT = "https://chat-app-backend-4hs0.onrender.com"
-// const ENDPOINT = "http://localhost:5001"
+// const ENDPOINT = "https://chat-app-backend-4hs0.onrender.com"
+ const ENDPOINT = "http://localhost:5001"
 
 
 export const useMessageStore = create((set, get) => ({

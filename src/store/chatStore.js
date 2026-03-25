@@ -3,15 +3,16 @@ import { create } from "zustand";
 import { useAuthStore } from "./autStore";
 import { toast } from "react-toastify";
 
-const ENDPOINT = "https://chat-app-backend-4hs0.onrender.com"
-// const ENDPOINT = "http://localhost:5001"
+// const ENDPOINT = "https://chat-app-backend-4hs0.onrender.com"
+const ENDPOINT = "http://localhost:5001"
 
 export const useChatStore = create((set, get) => ({
   Chats: [],
-
+  loadingChats : false ,
   selectedChat: null,
 
   getUserChats: async () => {
+     set({loadingChats : true })
     try {
       const res = await axios.get(`${ENDPOINT}/api/chat`, { withCredentials: true });
 
@@ -20,8 +21,10 @@ export const useChatStore = create((set, get) => ({
       let err = error?.response?.data?.message ? error?.response?.data?.message : "Failed to load chats"
       toast.error(err)
     }
+     set({loadingChats : false })
   },
   accessChat: async (userId) => {
+     set({loadingChats : true })
     try {
       const res = await axios.post(`${ENDPOINT}/api/chat/`, { userId }, { withCredentials: true });
       const { chat } = res.data;
@@ -41,8 +44,10 @@ export const useChatStore = create((set, get) => ({
       let err = error?.response?.data?.message ? error?.response?.data?.message : "Failed to access this chat"
       toast.error(err)
     }
+     set({loadingChats : false })
   },
   createGroup: async (data) => {
+     set({loadingChats : true })
     try {
       const res = await axios.post(`${ENDPOINT}/api/chat/group`, data, { withCredentials: true });
       set({ Chats: [...get().Chats, res.data.groupChat] });
@@ -51,6 +56,7 @@ export const useChatStore = create((set, get) => ({
       let err = error?.response?.data?.message ? error?.response?.data?.message : "Failed to create a group"
       toast.error(err)
     }
+     set({loadingChats : false })
   },
 
   addMembers: async (data) => {

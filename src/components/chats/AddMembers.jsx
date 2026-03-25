@@ -14,14 +14,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 
 const AddMembers = ({ groupId, groupMembers }) => {
-  const { addMembers } = useChatStore();
-  const { users, searchUser , setUsers  } = useAuthStore();
-  const [addUsers, setAddUsers] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const { addMembers } = useChatStore() ;
+  const { users, searchUser , setUsers ,authUser } = useAuthStore() ;
+  const [addUsers, setAddUsers] = useState([]) ;
+  const [open, setOpen] = useState(false) ;
+  const [searchQuery, setSearchQuery] = useState("") ;
 
   const handleAddMember = (user) => {
-    if (!groupMembers.find((member) => member._id === user._id) && !addUsers.find((u) => u._id === user._id)) {
+    if (!groupMembers.find((member) => member._id === user._id ) && !addUsers.find((u) => u._id === user._id)) {
       setAddUsers([...addUsers, user]);
     }
   };
@@ -36,11 +36,11 @@ const AddMembers = ({ groupId, groupMembers }) => {
     addMembers({
       groupId: groupId,
       newUsers: userIds,
-    });
-    setOpen(false);
-    setAddUsers([]);
-    setUsers([])
-    setSearchQuery("");
+    }) ;
+    setOpen(false) ;
+    setAddUsers([]) ;
+    setUsers([]) ; 
+    setSearchQuery("") ;
   };
 
   // Improved search with debounce
@@ -119,7 +119,7 @@ const AddMembers = ({ groupId, groupMembers }) => {
                 {users && users.length > 0 ? (
                   users.map((user) => {
                     const isSelected = addUsers.find((u) => u._id === user._id);
-                    return (
+                    if(authUser._id!==user._id) return (
                       <div
                         key={user._id}
                         className={`
@@ -143,6 +143,7 @@ const AddMembers = ({ groupId, groupMembers }) => {
                           <Plus className="h-4 w-4 text-muted-foreground" />
                         )}
                       </div>
+                      
                     );
                   })
                 ) : (
