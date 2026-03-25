@@ -4,8 +4,8 @@ import axios from 'axios'
 import { io } from 'socket.io-client';
 import { toast } from 'react-toastify';
 
-// const ENDPOINT = "https://chat-app-backend-4hs0.onrender.com"
-const ENDPOINT = "http://localhost:5001"
+const ENDPOINT = "https://chat-app-backend-4hs0.onrender.com"
+// const ENDPOINT = "http://localhost:5001"
 
 
 
